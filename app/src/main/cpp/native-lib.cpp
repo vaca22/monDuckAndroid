@@ -4,14 +4,14 @@
 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "threaded_app", __VA_ARGS__))
 #define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, "threaded_app", __VA_ARGS__))
-
+#include "cJSON.h"
 #include <iostream>
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
 
 
-#define NUM 10000000
+#define NUM 1000000
 
 typedef struct {
     float x;
@@ -97,6 +97,15 @@ int main() {
     LOGE("probability: %f",p);
     free(p_array);
 
+
+    cJSON * name= cJSON_CreateObject();
+
+    cJSON_AddNumberToObject(name,"num",s);
+    cJSON_AddNumberToObject(name,"total",NUM);
+    cJSON_AddNumberToObject(name,"p",p);
+    char * ga = cJSON_Print(name);
+    LOGE("gagaga %s",ga);
+    cJSON_Delete(name);
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
